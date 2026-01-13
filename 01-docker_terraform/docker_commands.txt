@@ -1,0 +1,5 @@
+# build image from Dockerfile
+docker build -t <name>:<tag> .
+
+# create container from image with bash entrypoint
+docker run -it --rm --entrypoint=bash <name>:<tag>
