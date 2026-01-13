@@ -3,3 +3,12 @@ docker build -t <name>:<tag> .
 
 # create container from image with bash entrypoint
 docker run -it --rm --entrypoint=bash <name>:<tag>
+
+# run postgres within a container
+docker run -it --rm \
+	-e POSTGRES_USER="root" \
+	-e POSTGRES_PASSWORD="root" \
+	-e POSTGRES_DB="ny_taxi" \
+	-v ny_taxi_postgres_data:/var/lib/postgresql \
+	-p 5431:5432 \
+	postgres:18
