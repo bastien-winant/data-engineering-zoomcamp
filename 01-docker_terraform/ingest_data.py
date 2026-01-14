@@ -1,9 +1,23 @@
 import pandas as pd
 from sqlalchemy import create_engine
+import argparse
 
+
+year = 2021
+month = 1
+
+table_name = "yellow_taxi_data"
+
+pg_user = "root"
+pg_password = "root"
+pg_host = "localhost"
+pg_port = 5431
+pg_db = "ny_taxi"
+
+chunk_size = 100_000
 
 path = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow'
-url = f'{path}/yellow_tripdata_2021-01.csv.gz'
+url = f'{path}/yellow_tripdata_{year}-{month:02d}.csv.gz'
 
 
 dtype = {
@@ -34,17 +48,16 @@ df_iter = pd.read_csv(
 	dtype=dtype,
 	parse_dates=parse_dates,
 	iterator=True,
-	chunksize=100000
+	chunksize=chunk_size
 )
 
-
-engine = create_engine("postgresql+psycopg://root:root@localhost:5431/ny_taxi")
+engine = create_engine(f"postgresql+psycopg://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_db}")
 
 for index, df_chunk in enumerate(df_iter):
 	if index == 0:
 		# Create table schema (no data)
 		df_chunk.head(0).to_sql(
-			name="yellow_taxi_data",
+			name=table_name,
 			con=engine,
 			if_exists="replace",
 			index=False
@@ -52,7 +65,7 @@ for index, df_chunk in enumerate(df_iter):
 
 	# Insert chunk
 	df_chunk.to_sql(
-		name="yellow_taxi_data",
+		name=table_name,
 		con=engine,
 		if_exists="append",
 		index=False
