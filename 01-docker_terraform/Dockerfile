@@ -6,13 +6,13 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 #set up a UV project
 WORKDIR /code
 RUN uv init
-RUN uv add pandas pyarrow
+RUN uv add pandas pyarrow "psycopg[binary]" sqlalchemy
 
 #add python installation to the path
 ENV PATH="/code/.venv/bin:$PATH"
 
 #copy the pipeline script file
-COPY pipeline.py pipeline.py
+COPY ingest_data.py ingest_data.py
 
 #execute the script
-ENTRYPOINT ["python", "pipeline.py"]
+ENTRYPOINT ["python", "ingest_data.py"]

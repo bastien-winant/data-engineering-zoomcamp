@@ -72,9 +72,9 @@ if __name__=="__main__":
 	parser.add_argument('--pg-db', default='ny_taxi', help='PostgreSQL database name')
 	parser.add_argument('--year', default=2021, type=int, help='Year of the data')
 	parser.add_argument('--month', default=1, type=int, help='Month of the data')
-	parser.add_argument('--chunk_size', default=100000, type=int, help='Chunk size for ingestion')
+	parser.add_argument('--chunk-size', default=100000, type=int, help='Chunk size for ingestion')
 	parser.add_argument('--target-table', default='yellow_taxi_data', help='Target table name')
-	parser.add_argument('--replace', default=False, help='Whether to drop the target table')
+	parser.add_argument('--replace', default=True, help='Whether to drop the target table')
 
 	args = parser.parse_args()
 
@@ -90,5 +90,3 @@ if __name__=="__main__":
 	replace_table = args.replace
 
 	run_pipeline(pg_user, pg_pass, pg_host, pg_port, pg_db, target_table, year, month, chunk_size, replace_table)
-
-	print(target_table)

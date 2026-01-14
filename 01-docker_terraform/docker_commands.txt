@@ -12,3 +12,16 @@ docker run -it --rm \
 	-v ny_taxi_postgres_data:/var/lib/postgresql \
 	-p 5431:5432 \
 	postgres:18
+
+# run pipeline locally
+uv run ingest_data.py \
+> --pg-user=root \
+> --pg-pass=root \
+> --pg-host=localhost \
+> --pg-db=ny_taxi \
+> --pg-port=5431 \
+> --year=2019 \
+> --month=10 \
+> --chunk-size=100_000 \
+> --target-table=yellow_taxi_data \
+> --replace=True
