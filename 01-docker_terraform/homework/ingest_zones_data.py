@@ -14,6 +14,8 @@ def run_pipeline(user, password, host, port, db, table, chunk_size, replace=Fals
 	engine = create_engine(f"postgresql+psycopg://{user}:{password}@{host}:{port}/{db}")
 
 	for index, df_chunk in enumerate(df_iter):
+		df_chunk.columns = map(lambda x: x.lower(), df_chunk.columns)
+
 		if index == 0 and replace:
 			# Create table schema (no data)
 			df_chunk.head(0).to_sql(

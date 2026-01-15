@@ -7,7 +7,7 @@ docker build -t zones_ingestion:V001 -f Dockerfile_zones .
 docker-compose up
 
 # run the trips ingestion script
-docker run -it --rm --network=homework trips_ingestion:V001 \
+docker run -it --rm --network=homework_default trips_ingestion:V001 \
  --pg-user=root \
  --pg-pass=root \
  --pg-host=pgdatabase \
@@ -16,7 +16,7 @@ docker run -it --rm --network=homework trips_ingestion:V001 \
  --year=2025 \
  --month=11 \
  --chunk-size=100_000 \
- --target-table=green_taxi_data \
+ --target-table=green_taxi_trips \
  --replace=True
 
 
@@ -28,5 +28,5 @@ docker run -it --rm --network=homework_default zones_ingestion:V001 \
  --pg-db=ny_taxi \
  --pg-port=5432 \
  --chunk-size=100_000 \
- --target-table=taxi_zones_data \
+ --target-table=taxi_zones \
  --replace=True

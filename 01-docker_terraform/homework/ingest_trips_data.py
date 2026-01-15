@@ -17,6 +17,8 @@ def run_pipeline(user, password, host, port, db, table, year, month, chunk_size,
 			if df.empty:
 				break
 
+			df.columns = map(lambda x: x.lower(), df.columns)
+
 			if replace and first:
 				df.head(0).to_sql(
 					name=table,

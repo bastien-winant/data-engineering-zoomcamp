@@ -1,0 +1,42 @@
+# Question 3. Counting short trips (8007)
+SELECT
+	COUNT(*) AS row_count
+FROM green_taxi_trips
+WHERE EXTRACT(MONTH FROM lpep_pickup_datetime) = 11
+AND trip_distance <= 1;
+
+# Question 4. Longest trip for each day (2025-11-14)
+SELECT
+	DATE(lpep_pickup_datetime) AS trip_date,
+	trip_distance
+FROM green_taxi_trips
+WHERE trip_distance < 100
+ORDER BY trip_distance DESC
+LIMIT 1;
+
+# Question 5. Biggest pickup zone (East Harlem North)
+SELECT
+	z.zone,
+	SUM(total_amount) AS total_amount
+FROM green_taxi_trips t
+JOIN taxi_zones z
+ON t.pulocationid = z.locationid
+WHERE DATE(t.lpep_pickup_datetime) = '2025-11-18'
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 1;
+
+# Question 6. Largest tip (Yorkville West)
+SELECT
+	z_do.zone AS dropoff_zone,
+	MAX(t.tip_amount) AS largest_tip
+FROM green_taxi_trips t
+JOIN taxi_zones z_pu
+ON t.pulocationid = z_pu.locationid
+JOIN taxi_zones z_do
+ON t.dolocationid = z_do.locationid
+WHERE z_pu.zone = 'East Harlem North'
+AND EXTRACT(MONTH FROM lpep_pickup_datetime) = 11
+AND EXTRACT(YEAR FROM lpep_pickup_datetime) = 2025
+GROUP BY 1
+ORDER BY 2 DESC;
