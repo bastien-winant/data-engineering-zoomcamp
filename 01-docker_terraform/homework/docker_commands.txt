@@ -1,0 +1,32 @@
+# build ingestion scripts
+docker build -t trips_ingestion:V001 -f Dockerfile_trips .
+docker build -t zones_ingestion:V001 -f Dockerfile_zones .
+
+
+# launch postgres & pgadmin
+docker-compose up
+
+# run the trips ingestion script
+docker run -it --rm --network=homework trips_ingestion:V001 \
+ --pg-user=root \
+ --pg-pass=root \
+ --pg-host=pgdatabase \
+ --pg-db=ny_taxi \
+ --pg-port=5432 \
+ --year=2025 \
+ --month=11 \
+ --chunk-size=100_000 \
+ --target-table=green_taxi_data \
+ --replace=True
+
+
+# run the zones ingestion script
+docker run -it --rm --network=homework_default zones_ingestion:V001 \
+ --pg-user=root \
+ --pg-pass=root \
+ --pg-host=pgdatabase \
+ --pg-db=ny_taxi \
+ --pg-port=5432 \
+ --chunk-size=100_000 \
+ --target-table=taxi_zones_data \
+ --replace=True
