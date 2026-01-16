@@ -4,6 +4,11 @@ variable "project_id" {
   description = "GCP project ID"
 }
 
+variable "service-account-key" {
+  description = "Service account key file location"
+  default = "./creds/service-account-creds.json"
+}
+
 variable "project_location" {
   type        = string
   default     = "europe-west1"
