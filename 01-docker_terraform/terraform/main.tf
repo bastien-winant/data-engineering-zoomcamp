@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     google = {
-      source = "hashicorp/google"
+      source  = "hashicorp/google"
       version = "4.72.1"
     }
   }
@@ -9,13 +9,13 @@ terraform {
 
 provider "google" {
   credentials = "./creds/service-account-creds.json"
-  project     = "spatial-thinker-484214-n8"
-  region      = "europe-west1"
+  project     = var.project_id
+  region      = var.project_location
 }
 
 resource "google_storage_bucket" "demo_bucket" {
-  name          = "terraform-demo-bucket-spatial-thinker-484214-n8"
-  location      = "europe-west1"
+  name          = var.bucket_name
+  location      = var.project_location
   force_destroy = true
 
   lifecycle_rule {
@@ -26,4 +26,10 @@ resource "google_storage_bucket" "demo_bucket" {
       type = "AbortIncompleteMultipartUpload"
     }
   }
+}
+
+resource "google_bigquery_dataset" "demo_dataset" {
+  dataset_id                 = var.dataset_id
+  location                   = var.project_location
+  delete_contents_on_destroy = true
 }
