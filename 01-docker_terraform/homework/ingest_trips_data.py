@@ -58,7 +58,7 @@ if __name__=="__main__":
 	parser.add_argument('--month', default=1, type=int, help='Month of the data')
 	parser.add_argument('--chunk-size', default=100000, type=int, help='Chunk size for ingestion')
 	parser.add_argument('--target-table', default='green_taxi_data', help='Target table name')
-	parser.add_argument('--replace', default=True, help='Whether to drop the target table')
+	parser.add_argument('--replace', default=False, help='Whether to drop the target table', action=argparse.BooleanOptionalAction)
 
 	args = parser.parse_args()
 
