@@ -6,7 +6,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 #set up a UV project
 WORKDIR /code
 RUN uv init
-RUN uv add numpy pandas duckdb "psycopg[binary]" sqlalchemy
+RUN uv add numpy pandas pyarrow duckdb "psycopg[binary]" sqlalchemy
 
 #add python installation to the path
 ENV PATH="/code/.venv/bin:$PATH"

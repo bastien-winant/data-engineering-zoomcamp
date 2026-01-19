@@ -8,35 +8,38 @@ def run_pipeline(user, password, host, port, db, table, vehicle_type, year, mont
 	with duckdb.connect(':memory:') as con:
 		engine = create_engine(f"postgresql+psycopg://{user}:{password}@{host}:{port}/{db}")
 
-		result = con.sql(f"SELECT * FROM '{url}'")
+		results = con.sql(f"SELECT * FROM '{url}'").fetch_record_batch(chunk_size)
 		first = True
 
 		while True:
-			df = result.fetch_df_chunk(chunk_size)
+			try:
+				df = results.read_next_batch().to_pandas()
 
-			if df.empty:
-				break
+				if df.empty:
+					break
 
-			df.columns = map(lambda x: x.lower(), df.columns)
+				df.columns = map(lambda x: x.lower(), df.columns)
 
-			if replace and first:
-				df.head(0).to_sql(
+				if replace and first:
+					df.head(0).to_sql(
+						name=table,
+						con=engine,
+						if_exists="replace",
+						index=False
+					)
+
+					first = False
+
+				df.to_sql(
 					name=table,
 					con=engine,
-					if_exists="replace",
+					if_exists="append",
 					index=False
 				)
 
-				first = False
-
-			df.to_sql(
-				name=table,
-				con=engine,
-				if_exists="append",
-				index=False
-			)
-
-			print(f"Inserted {df.shape[0]} rows.")
+				print(f"Inserted {df.shape[0]} rows.")
+			except StopIteration:
+				break
 
 if __name__=="__main__":
 	parser = argparse.ArgumentParser(
