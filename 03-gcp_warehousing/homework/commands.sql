@@ -21,6 +21,7 @@ SELECT DISTINCT(VendorID)
 FROM spatial-thinker-484214-n8.zoomcamp.yellow_tripdata_non_partitioned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
 
+-- CREATE PARTITIONED TABLE
 SELECT DISTINCT(VendorID)
 FROM spatial-thinker-484214-n8.zoomcamp.yellow_tripdata_partitioned
 WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
@@ -31,7 +32,7 @@ FROM `zoomcamp.INFORMATION_SCHEMA.PARTITIONS`
 WHERE table_name = 'yellow_tripdata_partitioned'
 ORDER BY total_rows DESC;
 
--- CLUSTERED TABLE
+-- CREATE CLUSTERED TABLE (ARRANGE WITHIN PARTITION)
 CREATE OR REPLACE TABLE spatial-thinker-484214-n8.zoomcamp.yellow_tripdata_partitioned_clustered
 PARTITION BY DATE(tpep_pickup_datetime)
 CLUSTER BY VendorID AS
