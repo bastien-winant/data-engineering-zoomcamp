@@ -15,3 +15,24 @@ SELECT * FROM spatial-thinker-484214-n8.zoomcamp.external_yellow_tripdata;
 CREATE OR REPLACE TABLE spatial-thinker-484214-n8.zoomcamp.yellow_tripdata_partitioned
 PARTITION BY DATE(tpep_pickup_datetime) AS
 SELECT * FROM spatial-thinker-484214-n8.zoomcamp.external_yellow_tripdata;
+
+
+SELECT DISTINCT(VendorID)
+FROM spatial-thinker-484214-n8.zoomcamp.yellow_tripdata_non_partitioned
+WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
+
+SELECT DISTINCT(VendorID)
+FROM spatial-thinker-484214-n8.zoomcamp.yellow_tripdata_partitioned
+WHERE DATE(tpep_pickup_datetime) BETWEEN '2019-06-01' AND '2019-06-30';
+
+-- INSPECT PARTITIONS
+SELECT table_name, partition_id, total_rows
+FROM `zoomcamp.INFORMATION_SCHEMA.PARTITIONS`
+WHERE table_name = 'yellow_tripdata_partitioned'
+ORDER BY total_rows DESC;
+
+-- CLUSTERED TABLE
+CREATE OR REPLACE TABLE spatial-thinker-484214-n8.zoomcamp.yellow_tripdata_partitioned_clustered
+PARTITION BY DATE(tpep_pickup_datetime)
+CLUSTER BY VendorID AS
+SELECT * FROM spatial-thinker-484214-n8.zoomcamp.external_yellow_tripdata;
