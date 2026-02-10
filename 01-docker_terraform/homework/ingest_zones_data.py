@@ -45,7 +45,7 @@ if __name__=="__main__":
 	parser.add_argument('--pg-user', default='root', help='PostgreSQL username')
 	parser.add_argument('--pg-pass', default='root', help='PostgreSQL password')
 	parser.add_argument('--pg-host', default='localhost', help='PostgreSQL host')
-	parser.add_argument('--pg-port', default='5431', help='PostgreSQL port')
+	parser.add_argument('--pg-port', default='5432', help='PostgreSQL port')
 	parser.add_argument('--pg-db', default='ny_taxi', help='PostgreSQL database name')
 	parser.add_argument('--chunk-size', default=100000, type=int, help='Chunk size for ingestion')
 	parser.add_argument('--target-table', default='taxi_zones', help='Target table name')

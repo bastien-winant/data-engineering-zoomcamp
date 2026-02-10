@@ -51,7 +51,7 @@ if __name__=="__main__":
 	parser.add_argument('--pg-user', default='root', help='PostgreSQL username')
 	parser.add_argument('--pg-pass', default='root', help='PostgreSQL password')
 	parser.add_argument('--pg-host', default='localhost', help='PostgreSQL host')
-	parser.add_argument('--pg-port', default='5431', help='PostgreSQL port')
+	parser.add_argument('--pg-port', default='5432', help='PostgreSQL port')
 	parser.add_argument('--pg-db', default='ny_taxi', help='PostgreSQL database name')
 	parser.add_argument('--type', default='green', help='Type of vehicle')
 	parser.add_argument('--year', default=2021, type=int, help='Year of the data')

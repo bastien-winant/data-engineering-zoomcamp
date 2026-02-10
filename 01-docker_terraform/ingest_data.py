@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import argparse
 
-def run_pipeline(user, password, host, port, db, table, year, month, chunk_size, replace=False):
+def run_pipeline(user, password, host, port, db, schema, table, year, month, chunk_size, replace=False):
 	path = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow'
 	url = f'{path}/yellow_tripdata_{year}-{month:02d}.csv.gz'
 
@@ -42,6 +42,7 @@ def run_pipeline(user, password, host, port, db, table, year, month, chunk_size,
 			# Create table schema (no data)
 			df_chunk.head(0).to_sql(
 				name=table,
+				schema=schema,
 				con=engine,
 				if_exists="replace",
 				index=False
@@ -50,6 +51,7 @@ def run_pipeline(user, password, host, port, db, table, year, month, chunk_size,
 		# Insert chunk
 		df_chunk.to_sql(
 			name=table,
+			schema=schema,
 			con=engine,
 			if_exists="append",
 			index=False
@@ -68,8 +70,9 @@ if __name__=="__main__":
 	parser.add_argument('--pg-user', default='root', help='PostgreSQL username')
 	parser.add_argument('--pg-pass', default='root', help='PostgreSQL password')
 	parser.add_argument('--pg-host', default='localhost', help='PostgreSQL host')
-	parser.add_argument('--pg-port', default='5431', help='PostgreSQL port')
+	parser.add_argument('--pg-port', default='5432', help='PostgreSQL port')
 	parser.add_argument('--pg-db', default='ny_taxi', help='PostgreSQL database name')
+	parser.add_argument('--pg-schema', default='public', help='PostgreSQL database schema name')
 	parser.add_argument('--year', default=2021, type=int, help='Year of the data')
 	parser.add_argument('--month', default=1, type=int, help='Month of the data')
 	parser.add_argument('--chunk-size', default=100000, type=int, help='Chunk size for ingestion')
@@ -83,10 +86,11 @@ if __name__=="__main__":
 	pg_host = args.pg_host
 	pg_port = args.pg_port
 	pg_db = args.pg_db
+	pg_schema = args.pg_schema
 	year = args.year
 	month = args.month
 	chunk_size = args.chunk_size
 	target_table = args.target_table
 	replace_table = args.replace
 
-	run_pipeline(pg_user, pg_pass, pg_host, pg_port, pg_db, target_table, year, month, chunk_size, replace_table)
+	run_pipeline(pg_user, pg_pass, pg_host, pg_port, pg_db, pg_schema, target_table, year, month, chunk_size, replace_table)
