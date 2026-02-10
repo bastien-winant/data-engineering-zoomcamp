@@ -1,0 +1,11 @@
+# SHUT DOWN THE DEFAULT CLUSTER
+sudo -u postgres pg_ctl stop -D /Library/PostgreSQL/18/data
+
+# START UP THE CLUSTER
+pg_ctl -D $(pwd)/de_zoomcamp/ -l logfile start
+
+# SHUTDOWN THE CLUSTER
+pg_ctl -D $(pwd)/de_zoomcamp/ stop
+
+# CREATE A NEW DATABASE CLUSTER
+initdb -D $(pwd)/de_zoomcamp/
