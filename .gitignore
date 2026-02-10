@@ -216,6 +216,7 @@ __marimo__/
 .streamlit/secrets.toml
 
 *.parquet
+*.csv
 gcs.json
 logfile
 de_zoomcamp/
