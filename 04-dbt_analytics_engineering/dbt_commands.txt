@@ -1,0 +1,5 @@
+# generate schema file with source tables
+dbt --quiet run-operation generate_source --args '{"schema_name": "zoomcamp", "database_name": "spatial-thinker-484214-n8", "name": "staging", "table_names":["green_tripdata", "yellow_tripdata"], "include_database": True}' > models/staging/schema.yml
+
+# generate SQL for a base model
+dbt --quiet run-operation generate_base_model --args '{"source_name": "staging", "table_name": "green_tripdata"}' > models/staging/stg_green_tripdata.sql
