@@ -1,9 +1,12 @@
 version: 2
 
 sources:
-  - name: staging
+  - name: raw
+    description: "Raw sources for NYC taxi rides"
     database: spatial-thinker-484214-n8
     schema: zoomcamp
     tables:
       - name: green_tripdata
+        description: ""
       - name: yellow_tripdata
+        description: ""
