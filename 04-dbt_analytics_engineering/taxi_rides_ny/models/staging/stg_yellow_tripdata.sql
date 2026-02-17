@@ -2,7 +2,7 @@
 
 with source as (
 
-    select * from {{ source('staging', 'yellow_tripdata') }}
+    select * from {{ source('raw', 'yellow_tripdata') }}
 
 ),
 
