@@ -2,8 +2,8 @@ with source as (
     select * from {{ source('raw', 'yellow_tripdata') }}
 ),
 
-renamed as (
-    select
+renamed AS (
+    SELECT
       	-- identifiers
         unique_row_id,
         filename,
@@ -31,8 +31,8 @@ renamed as (
         CAST(improvement_surcharge AS NUMERIC) AS improvement_surcharge,
         CAST(total_amount AS NUMERIC) AS total_amount,
         CAST(congestion_surcharge AS NUMERIC) AS congestion_surcharge
-    from source
+    FROM source
+    WHERE vendorid IS NOT NULL
 )
 
 select * from renamed
-
