@@ -8,7 +8,7 @@ renamed AS (
         unique_row_id,
         filename,
         CAST(vendorid AS INT) AS vendor_id,
-        CAST(ratecodeid AS INT) AS rate_code_id,
+        CAST(ratecodeid AS NUMERIC) AS rate_code_id,
         CAST(pulocationid AS INT) AS pickup_location_id,
         CAST(dolocationid AS INT) AS dropoff_location_id,
 

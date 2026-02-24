@@ -8,7 +8,7 @@ renamed AS (
         unique_row_id,
         filename,
         CAST(vendorid AS INT) AS vendor_id,
-        CAST(ratecodeid AS INT) AS rate_code_id,
+        CAST(ratecodeid AS NUMERIC) AS rate_code_id,
         CAST(pulocationid AS INT) AS pickup_location_id,
         CAST(dolocationid AS INT) AS dropoff_location_id,
 
@@ -31,7 +31,7 @@ renamed AS (
         CAST(improvement_surcharge AS NUMERIC) AS improvement_surcharge,
         CAST(total_amount AS NUMERIC) AS total_amount,
         CAST(payment_type AS INT) AS payment_type,
-        CAST(trip_type AS INT) AS trip_type,
+        CAST(trip_type AS NUMERIC) AS trip_type,
         CAST(congestion_surcharge AS NUMERIC) AS congestion_surcharge
     FROM source
     WHERE vendorid IS NOT NULL
