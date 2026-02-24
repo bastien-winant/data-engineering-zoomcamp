@@ -1,13 +1,8 @@
-
-
 with source as (
-
     select * from {{ source('raw', 'green_tripdata') }}
-
 ),
 
 renamed as (
-
     select
         unique_row_id,
         filename,
@@ -31,9 +26,7 @@ renamed as (
         payment_type,
         trip_type,
         congestion_surcharge
-
     from source
-
 )
 
 select * from renamed
