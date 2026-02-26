@@ -1,0 +1,6 @@
+-- TODO
+-- one row per trip
+-- add a column indicating the trip type (yellow/green)
+-- add a primary key (trip_id) that is unique
+-- find, understand, and handle duplicates
+-- enrich the payment_type column
