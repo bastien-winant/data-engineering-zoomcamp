@@ -1,8 +1,8 @@
-with green_tripdata as (
-	SELECT * FROM {{ ref("stg_green_tripdata") }}
+WITH green_tripdata AS (
+	SELECT *, 'Green' AS service_type FROM {{ ref("stg_green_tripdata") }}
 ),
 yellow_tripdata AS (
-	SELECT * FROM {{ ref("stg_yellow_tripdata") }}
+	SELECT *, 'Yellow' AS service_type FROM {{ ref("stg_yellow_tripdata") }}
 ),
 trips_union AS (
 	SELECT * FROM green_tripdata
