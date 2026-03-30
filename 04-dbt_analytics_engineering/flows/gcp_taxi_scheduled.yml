@@ -41,16 +41,17 @@ tasks:
         df.passenger_count = df.passenger_count.astype(pd.Int64Dtype())
         df.payment_type = df.payment_type.astype(pd.Int64Dtype())
       else:
-        df.rename(
-          {
-            'dispatching_base_num': 'dispatching_base_number',
-            'dropOff_datetime': 'dropoff_datetime',
-            'DOlocationID': 'DOLocationID',
-            'PUlocationID': 'PULocationID',
-            'SR_Flag': 'sr_flag',
-            'Affiliated_base_number': 'affiliated_base_number'
-          },
-          axis=1, inplace=True)
+        df.rename({
+          'dispatching_base_num': 'dispatching_base_number',
+          'dropOff_datetime': 'dropoff_datetime',
+          'DOlocationID': 'DOLocationID',
+          'PUlocationID': 'PULocationID',
+          'SR_Flag': 'sr_flag',
+          'Affiliated_base_number': 'affiliated_base_number'
+        }, axis=1, inplace=True)
+        
+        df.dispatching_base_number = df.dispatching_base_number.str.strip()
+        df.affiliated_base_number = df.affiliated_base_number.str.strip()
 
       # Save it locally (Kestra will pick it up via outputFiles)
       df.to_csv("{{ vars.file }}.csv", index=False)
