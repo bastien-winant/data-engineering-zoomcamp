@@ -220,4 +220,8 @@ __marimo__/
 gcs.json
 logfile
 de_zoomcamp/
+*.db
 .bruin.yml
+logs/runs
+logs/*.log
+*.py[cod]
