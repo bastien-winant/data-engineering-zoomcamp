@@ -5,46 +5,65 @@
 # - Materialization: https://getbruin.com/docs/bruin/assets/materialization
 # - Quality checks: https://getbruin.com/docs/bruin/quality/available_checks
 
-# TODO: Set the asset name (recommended: reports.trips_report).
-name: TODO_SET_ASSET_NAME
+name: reports.trips_report
+type: duckdb.sql
 
-# TODO: Set platform type.
-# Docs: https://getbruin.com/docs/bruin/assets/sql
-# suggested type: duckdb.sql
-type: TODO
-
-# TODO: Declare dependency on the staging asset(s) this report reads from.
 depends:
-  - TODO_DEP_STAGING_ASSET
+  - staging.trips
 
-# TODO: Choose materialization strategy.
-# For reports, `time_interval` is a good choice to rebuild only the relevant time window.
-# Important: Use the same `incremental_key` as staging (e.g., pickup_datetime) for consistency.
 materialization:
   type: table
-  # suggested strategy: time_interval
-  strategy: TODO
-  # TODO: set to your report's date column
-  incremental_key: TODO
-  # TODO: set to `date` or `timestamp`
-  time_granularity: TODO
 
-# TODO: Define report columns + primary key(s) at your chosen level of aggregation.
 columns:
-  - name: TODO_dim
-    type: TODO
-    description: TODO
+  - name: trip_date
+    type: date
     primary_key: true
-  - name: TODO_date
-    type: DATE
-    description: TODO
+  - name: taxi_type
+    type: varchar
     primary_key: true
-  - name: TODO_metric
-    type: BIGINT
-    description: TODO
+  - name: payment_type_name
+    type: varchar
+  - name: trip_count
+    type: bigint
+    checks:
+      - name: positive
+  - name: total_passengers
+    type: bigint
+    checks:
+      - name: non_negative
+  - name: total_distance
+    type: double
+    checks:
+      - name: non_negative
+  - name: total_fare
+    type: double
+    checks:
+      - name: non_negative
+  - name: total_tips
+    type: double
+    checks:
+      - name: non_negative
+  - name: total_revenue
+    type: double
+    checks:
+      - name: non_negative
+  - name: avg_fare
+    type: double
+    checks:
+      - name: non_negative
+  - name: avg_trip_distance
+    type: double
+    checks:
+      - name: non_negative
+  - name: avg_passengers
+    type: double
     checks:
       - name: non_negative
 
+custom_checks:
+  - name: row_count_positive
+    query: SELECT COUNT(*) > 0 FROM reports.trips_report
+    value: 1
 @bruin */
 
 -- Purpose of reports:
@@ -53,7 +72,23 @@ columns:
 -- - Filter using `{{ start_datetime }}` / `{{ end_datetime }}` for incremental runs
 -- - GROUP BY your dimension + date columns
 
-SELECT * -- TODO: replace with your aggregation logic
+SELECT
+	CAST(pickup_datetime AS DATE) AS trip_date,
+	taxi_type,
+	payment_type_name,
+	COUNT(*) AS trip_count,
+	SUM(COALESCE(passenger_count, 0)) AS total_passengers,
+	SUM(COALESCE(trip_distance, 0)) AS total_distance,
+	SUM(COALESCE(fare_amount, 0)) AS total_fare,
+	SUM(COALESCE(tip_amount, 0)) AS total_tips,
+	SUM(COALESCE(total_amount, 0)) AS total_revenue,
+	AVG(COALESCE(fare_amount, 0)) AS avg_fare,
+	AVG(COALESCE(trip_distance, 0)) AS avg_trip_distance,
+	AVG(COALESCE(passenger_count, 0)) AS avg_passenger_count
 FROM staging.trips
 WHERE pickup_datetime >= '{{ start_datetime }}'
-  AND pickup_datetime < '{{ end_datetime }}'
+AND pickup_datetime <= '{{ end_datetime }}'
+GROUP BY
+	CAST(pickup_datetime AS DATE),
+	taxi_type,
+	payment_type_name
