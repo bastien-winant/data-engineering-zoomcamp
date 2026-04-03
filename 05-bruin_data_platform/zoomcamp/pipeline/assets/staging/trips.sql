@@ -9,9 +9,7 @@ depends:
 
 materialization:
   type: table
-  strategy: time_interval
-  incremental_key: pickup_datetime
-  time_granularity: timestamp
+  strategy: create+replace
 
 columns:
   - name: pickup_datetime
@@ -90,9 +88,7 @@ WITH deduplicated AS (
             ORDER BY extracted_at DESC
         ) AS _row_num
     FROM ingestion.trips
-    WHERE pickup_datetime >= '{{ start_datetime }}'
-      AND pickup_datetime <  '{{ end_datetime }}'
-      AND pickup_datetime  IS NOT NULL
+    WHERE pickup_datetime  IS NOT NULL
       AND dropoff_datetime IS NOT NULL
       AND pulocationid     IS NOT NULL
       AND dolocationid     IS NOT NULL
