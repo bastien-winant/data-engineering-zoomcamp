@@ -92,7 +92,9 @@ WITH deduplicated AS (
       AND dropoff_datetime IS NOT NULL
       AND pulocationid     IS NOT NULL
       AND dolocationid     IS NOT NULL
-      AND fare_amount      IS NOT NULL
+      AND fare_amount      >= 0
+      AND passenger_count  >= 0
+      AND tip_amount       >= 0
 )
 
 SELECT
