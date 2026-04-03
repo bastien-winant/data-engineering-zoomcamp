@@ -20,11 +20,13 @@ parameters:
 columns:
   - name: payment_type_id
     type: integer
+    description: The ID of the payment type
     primary_key: true
     checks:
       - name: not_null
       - name: unique
   - name: payment_type_name
     type: string
+    description: The name of the payment type
     checks:
       - name: not_null
