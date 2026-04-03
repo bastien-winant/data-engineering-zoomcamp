@@ -20,13 +20,11 @@ parameters:
 columns:
   - name: payment_type_id
     type: integer
-    description: TODO
     primary_key: true
     checks:
       - name: not_null
       - name: unique
   - name: payment_type_name
     type: string
-    description: TODO
     checks:
       - name: not_null
