@@ -217,6 +217,7 @@ __marimo__/
 
 *.parquet
 *.csv
+*.crc
 gcs.json
 logfile
 de_zoomcamp/
@@ -225,3 +226,5 @@ de_zoomcamp/
 logs/runs
 logs/*.log
 *.py[cod]
+
+_SUCCESS
