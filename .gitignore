@@ -218,6 +218,7 @@ __marimo__/
 *.parquet
 *.csv
 *.crc
+*.gz
 gcs.json
 logfile
 de_zoomcamp/
